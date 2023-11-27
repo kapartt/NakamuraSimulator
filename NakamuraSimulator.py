@@ -1,4 +1,5 @@
 from random import random
+from itertools import accumulate
 
 gamesCount = 600
 simulationsCount = 1000
@@ -25,14 +26,14 @@ def getRes(x, w, d):
 
 nakaSeriesCountOnSimulation = {}
 
-
 for simulationIndex in range(simulationsCount):
     streakLen = 0
     streakPts = 0.0
     nakaSeriesCount = 0
     sumGamesOnStreaks = 0
     
-    results = [getRes(random(), winProb, drawProb) for _ in range(gamesCount)]
+    results = [0] + [getRes(random(), winProb, drawProb) for _ in range(gamesCount)]
+    prefixSums = list(accumulate(results))
     
     print('Simulation #', (simulationIndex + 1))
     
@@ -45,10 +46,7 @@ for simulationIndex in range(simulationsCount):
         newMaxSeriesLen = min(maxSeriesLen, gamesCount - gameIndex)
         
         for seriesLen in range(minSeriesLen, newMaxSeriesLen):            
-            streakPts = 0
-            
-            for i in range(seriesLen):
-                streakPts += results[i + gameIndex]
+            streakPts = prefixSums[gameIndex + seriesLen] - prefixSums[gameIndex]
             
             if streakPts / seriesLen >= pointsFracThreshold:
                 f = True
