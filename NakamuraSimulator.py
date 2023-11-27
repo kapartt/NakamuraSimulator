@@ -32,18 +32,18 @@ for simulationIndex in range(simulationsCount):
     nakaSeriesCount = 0
     sumGamesOnStreaks = 0
     
-    results = [0] + [getRes(random(), winProb, drawProb) for _ in range(gamesCount)]
-    prefixSums = list(accumulate(results))
+    results = [getRes(random(), winProb, drawProb) for _ in range(gamesCount)]
+    prefixSums = [0] + list(accumulate(results))
     
     print('Simulation #', (simulationIndex + 1))
     
     gameIndex = 0
     
-    while gameIndex < gamesCount - minSeriesLen + 1:
+    while gameIndex < len(prefixSums) - minSeriesLen:
         f = False
         successSeriesLen = 0   
         successPts = 0
-        newMaxSeriesLen = min(maxSeriesLen, gamesCount - gameIndex + 1)
+        newMaxSeriesLen = min(maxSeriesLen, len(prefixSums) - gameIndex)
         
         for seriesLen in range(minSeriesLen, newMaxSeriesLen):            
             streakPts = prefixSums[gameIndex + seriesLen] - prefixSums[gameIndex]
