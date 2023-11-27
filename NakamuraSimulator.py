@@ -39,11 +39,11 @@ for simulationIndex in range(simulationsCount):
     
     gameIndex = 0
     
-    while gameIndex < gamesCount - minSeriesLen:
+    while gameIndex < gamesCount - minSeriesLen + 1:
         f = False
         successSeriesLen = 0   
         successPts = 0
-        newMaxSeriesLen = min(maxSeriesLen, gamesCount - gameIndex)
+        newMaxSeriesLen = min(maxSeriesLen, gamesCount - gameIndex + 1)
         
         for seriesLen in range(minSeriesLen, newMaxSeriesLen):            
             streakPts = prefixSums[gameIndex + seriesLen] - prefixSums[gameIndex]
